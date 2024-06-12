@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Reserva de Puestos</title>
+    <style>
+        .puesto {
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            margin: 5px;
+            text-align: center;
+            line-height: 50px;
+            border: 1px solid #000;
+        }
+        .libre {
+            background-color: yellow;
+        }
+        .reservado {
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reserva de Puestos</h1>
+    <form action="/reservar" method="post">
+        <label for="dia">Día:</label>
+        <select name="dia" id="dia">
+            {% for dia in reservas.keys() %}
+                <option value="{{ dia }}">{{ dia }}</option>
+            {% endfor %}
+        </select>
+        <label for="puesto">Puesto:</label>
+        <select name="puesto" id="puesto">
+            {% for puesto in puestos %}
+                <option value="{{ puesto }}">{{ puesto }}</option>
+            {% endfor %}
+        </select>
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" id="nombre" required>
+        <button type="submit">Reservar</button>
+    </form>
+
+    {% for dia, reservas_dia in reservas.items() %}
+        <h2>{{ dia }}</h2>
+        <div>
+            {% for puesto in puestos %}
+                {% if puesto in reservas_dia %}
+                    <div class="puesto reservado">{{ puesto }}<br>{{ reservas_dia[puesto] }}</div>
+                {% else %}
+                    <div class="puesto libre">{{ puesto }}</div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+</body>
+</html>
